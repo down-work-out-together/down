@@ -1,6 +1,7 @@
 package com.example.demo.domain.user.service;
 
 import com.example.demo.domain.user.entity.UserRoleEnumType;
+import com.example.demo.domain.user.exception.EmailVerificationCodeMismatchException;
 import com.example.demo.domain.user.exception.PendingEmailNotFoundException;
 import com.example.demo.domain.user.mapper.EmailMapper;
 import com.example.demo.domain.user.model.PendingEmail;
@@ -37,11 +38,11 @@ public class UserService {
         // 이메일 확인 코드 보류 이메일에 있는지 확인
         PendingEmail pendingEmail = pendingEmailsRepository.findByEmail(user.getEmail())
                 .map(emailMapper::entityToDomain)
-                .orElseThrow(() -> new PendingEmailNotFoundException("이메일 인증이 필요합니다. 이메일을 확인해주세요."));
+                .orElseThrow(() -> new PendingEmailNotFoundException("이메일 유효성 검사를 진행하지 않은 이메일 주소에 대한 요청입니다."));
 
         // 이메일 확인 코드가 일치하는지 확인
         if (!pendingEmail.getAuthCode().equals(code)) {
-            throw new IllegalArgumentException("이메일 인증코드가 일치하지 않습니다.");
+            throw new EmailVerificationCodeMismatchException("이메일 인증코드가 일치하지 않습니다.");
         }
 
         // 회원 가입 처리

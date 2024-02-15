@@ -13,8 +13,7 @@ import com.example.demo.domain.user.dto.response.CheckEmailResponseDTO;
 import com.example.demo.domain.user.model.User;
 import com.example.demo.domain.user.service.EmailService;
 import com.example.demo.domain.user.service.UserService;
-import com.example.demo.domain.util.BaseResponse;
-import com.example.demo.domain.util.SuccessResponse;
+import com.example.demo.domain.util.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -61,6 +60,14 @@ public class UserJoinController {
             @ApiResponse(
                     responseCode = "200",
                     description = "이메일 중복 체크 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "사용중이거나, 회원가입을 진행중인 이메일 입니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
             )
     })
     @PostMapping("/check-email")
@@ -99,6 +106,30 @@ public class UserJoinController {
             @ApiResponse(
                     responseCode = "200",
                     description = "이메일 인증코드 발송 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "사용중인 이메일입니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "사용가능한 이메일 확인을 먼저 진행해주시기 바랍니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "인증 횟수 5번을 초과하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
             )
     })
     @PostMapping("/send-email-verification-code")
@@ -138,6 +169,14 @@ public class UserJoinController {
             @ApiResponse(
                     responseCode = "200",
                     description = "이메일 인증코드 확인 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "이메일 유효성 검사 또는 이메일 인증코드 발송을 먼저 진행해주시기 바랍니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
             )
     })
     @PostMapping("/check-email-verification-code")
@@ -176,9 +215,25 @@ public class UserJoinController {
             @ApiResponse(
                     responseCode = "200",
                     description = "회원가입 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "이메일 인증코드가 일치하지 않습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "이메일 유효성 검사 또는 이메일 인증코드 발송을 먼저 진행해주시기 바랍니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FailResponse.class)
+                    )
             )
     })
-    @PostMapping("/join")
+    @PostMapping
     public ResponseEntity<BaseResponse<UserJoinResponseDTO>> join(
             @Validated @RequestBody UserJoinCommand cmd
     ) {
