@@ -12,23 +12,23 @@ public class FailResponse {
     private boolean success;
     @Schema(description = "응답 데이터")
     private Data data;
-    @Schema(description = "응답 메시지", example = "요청이 실패했습니다.")
+    @Schema(description = "응답 메시지", example = "상황에 맞는 에러 메시지")
     private String message;
 
-    public FailResponse(Data data) {
+    public FailResponse(Data data, String message) {
         this.success = false;
         this.data = data;
-        this.message = "요청이 실패했습니다.";
+        this.message = message;
     }
 
     public static FailResponse of(String data) {
-        return new FailResponse(FailResponse.Data.of(data));
+        return new FailResponse(FailResponse.Data.of(data), data);
     }
 
     @lombok.Data
     @AllArgsConstructor(staticName = "of")
     public static class Data {
-        @Schema(description = "에러 메시지", example = "상황에 맞는 에러 메시지.")
+        // 수정 부분 RequestBody 들어갈 부분
         private String errorMessage;
     }
 }
