@@ -7,7 +7,7 @@ import com.example.demo.domain.chat.dto.response.ChatMessageReadResponseDto;
 import com.example.demo.domain.chat.entity.ChatMessage;
 import com.example.demo.domain.chat.entity.ChatRoom;
 import com.example.demo.domain.chat.repository.*;
-import com.example.demo.domain.user.entity.UserEntity;
+import com.example.demo.domain.user.entity.User;
 import com.example.demo.domain.user.repository.UserRepository;
 import com.example.demo.global.exception.CustomException;
 import com.example.demo.global.exception.ExceptionCode;
@@ -33,7 +33,7 @@ public class ChatMessageService {
 
     public void saveChatMessage(ChatMessageCreateRequest req) {
 
-        UserEntity user = userRepository.findById(req.getUserId())
+        User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_USER));
 
         ChatRoom chatRoom = chatRoomJpaRepository.findById(req.getChatRoomId())

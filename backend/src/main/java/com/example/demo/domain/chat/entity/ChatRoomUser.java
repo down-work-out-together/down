@@ -1,6 +1,6 @@
 package com.example.demo.domain.chat.entity;
 
-import com.example.demo.domain.user.entity.UserEntity;
+import com.example.demo.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class ChatRoomUser {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "chatRoom_id")
@@ -25,7 +25,7 @@ public class ChatRoomUser {
 
     //private boolean isAdmin;
 
-    public ChatRoomUser(UserEntity user, ChatRoom chatRoom) {
+    public ChatRoomUser(User user, ChatRoom chatRoom) {
         this.user = user;
         this.chatRoom = chatRoom;
     }

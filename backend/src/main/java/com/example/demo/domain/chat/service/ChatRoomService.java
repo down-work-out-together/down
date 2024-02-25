@@ -9,7 +9,7 @@ import com.example.demo.domain.chat.entity.ChatRoomUser;
 import com.example.demo.domain.chat.repository.ChatMessageJpaRepository;
 import com.example.demo.domain.chat.repository.ChatRoomJpaRepository;
 import com.example.demo.domain.chat.repository.ChatRoomUserJpaRepository;
-import com.example.demo.domain.user.entity.UserEntity;
+import com.example.demo.domain.user.entity.User;
 import com.example.demo.domain.user.repository.UserRepository;
 import com.example.demo.global.exception.CustomException;
 import com.example.demo.global.exception.ExceptionCode;
@@ -32,7 +32,7 @@ public class ChatRoomService {
 
     public ChatRoomListResponseDto getAllChatRoomByUserId(long userId) {
 
-        UserEntity user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_USER));
 
         List<ChatRoomUser> chatRoomUserList = chatRoomUserJpaRepository.findAllByUser(user);
@@ -53,7 +53,7 @@ public class ChatRoomService {
         List<Long> userIdList = chatRoom.getChatRoomUserList()
                 .stream()
                 .map(ChatRoomUser::getUser)
-                .map(UserEntity::getId)
+                .map(User::getId)
                 .collect(Collectors.toList());
 
         return new ChatRoomDto(chatRoom.getId(), chatRoom.getChatRoomName(), userIdList);
@@ -63,7 +63,7 @@ public class ChatRoomService {
 
         ChatRoom chatRoomJpa = chatRoomJpaRepository.save(new ChatRoom(chatRoomCreateRequest.getChatRoomName()));
 
-        List<UserEntity> userList = userRepository.findAllById(chatRoomCreateRequest.getUserIdList());
+        List<User> userList = userRepository.findAllById(chatRoomCreateRequest.getUserIdList());
 
         List<ChatRoomUser> chatRoomUserList = userList.stream()
                 .map(user -> new ChatRoomUser(user, chatRoomJpa))
@@ -76,13 +76,13 @@ public class ChatRoomService {
 
     public ChatRoomDeleteResponseDto exitChatroom(ChatRoomDeleteRequest req) {
 
-        UserEntity userEntity = userRepository.findById(req.getUserId())
+        User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_USER));
 
         ChatRoom chatRoom = chatRoomJpaRepository.findById(req.getChatRoomId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CHAT_ROOM));
 
-        ChatRoomUser chatRoomUser = chatRoomUserJpaRepository.findByUserAndChatRoom(userEntity, chatRoom)
+        ChatRoomUser chatRoomUser = chatRoomUserJpaRepository.findByUserAndChatRoom(user, chatRoom)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CHAT_ROOM_USER));
 
         chatRoomUserJpaRepository.delete(chatRoomUser);
