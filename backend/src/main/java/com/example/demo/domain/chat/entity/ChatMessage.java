@@ -1,17 +1,15 @@
 package com.example.demo.domain.chat.entity;
 
-import com.example.demo.domain.chat.dto.ChatMessageDto;
+import com.example.demo.domain.chat.dto.response.ChatMessageDto;
 import com.example.demo.domain.util.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Getter
 @Builder
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatMessage extends BaseEntity {
 

@@ -1,6 +1,6 @@
 package com.example.demo.domain.chat.service;
 
-import com.example.demo.domain.chat.dto.ChatMessageDto;
+import com.example.demo.domain.chat.dto.response.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;

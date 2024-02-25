@@ -33,8 +33,13 @@ public enum ExceptionCode {
     NOT_MATCH_EMAIL_AUTH_CODE("이메일 인증코드가 일치하지 않습니다.", 400),
 
     // 비밀번호가 일치하지 않습니다.
-    NOT_MATCH_PASSWORD("비밀번호가 일치하지 않습니다.", 400)
-    ;
+    NOT_MATCH_PASSWORD("비밀번호가 일치하지 않습니다.", 400),
+
+    //  채팅방이 존재하지 않습니다.
+    NOT_EXIST_CHAT_ROOM("채팅방이 존재하지 않습니다.", 400),
+
+    //  채팅방에 초대된 회원이 아닙니다.
+    NOT_EXIST_CHAT_ROOM_USER("채팅방에 초대된 회원이 아닙니다.", 400);
 
     private final String message;
     private final int httpStatusCode;

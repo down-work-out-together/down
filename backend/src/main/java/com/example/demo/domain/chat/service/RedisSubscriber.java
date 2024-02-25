@@ -1,6 +1,6 @@
 package com.example.demo.domain.chat.service;
 
-import com.example.demo.domain.chat.dto.ChatMessageDto;
+import com.example.demo.domain.chat.dto.response.ChatMessageDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

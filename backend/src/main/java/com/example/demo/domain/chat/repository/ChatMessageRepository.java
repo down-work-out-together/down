@@ -1,6 +1,6 @@
 package com.example.demo.domain.chat.repository;
 
-import com.example.demo.domain.chat.dto.ChatMessageDto;
+import com.example.demo.domain.chat.dto.response.ChatMessageDto;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
