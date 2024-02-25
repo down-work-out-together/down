@@ -35,10 +35,17 @@ public enum ExceptionCode {
     // 비밀번호가 일치하지 않습니다.
     NOT_MATCH_PASSWORD("비밀번호가 일치하지 않습니다.", 400),
 
-    //  채팅방이 존재하지 않습니다.
+    // 카카오 OAuth 예외
+    KAKAO_OAUTH_ERROR("카카오 OAuth 예외", 400),
+
+    EXIST_NICKNAME("사용중인 닉네임 입니다.", 400),
+
+    INVALID_AUTH_HEADER("유효하지 않은 인증 헤더입니다.", 400),
+
+    INVALID_AUTH_HEADER_FORMAT("올바른 인증 헤더 형식이 아닙니다.", 400),
+
     NOT_EXIST_CHAT_ROOM("채팅방이 존재하지 않습니다.", 400),
 
-    //  채팅방에 초대된 회원이 아닙니다.
     NOT_EXIST_CHAT_ROOM_USER("채팅방에 초대된 회원이 아닙니다.", 400);
 
     private final String message;
