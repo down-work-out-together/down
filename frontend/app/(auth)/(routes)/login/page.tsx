@@ -1,16 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { useProfile } from "@/hooks/user/useProfile";
 import { LoginForm } from "@/app/(auth)/components/login";
 
 const LoginPage = () => {
 	const user = useProfile();
-	const router = useRouter();
 
 	if (user) {
-		router.push("/");
+		redirect("/");
 	}
 
 	return (

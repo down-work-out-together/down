@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
@@ -30,7 +31,7 @@ const LoginForm = () => {
 	const login = useLogin();
 
 	const onSubmit = async (value: FieldValues) => {
-		login(value.email, value.password);
+		await login(value.email, value.password);
 	};
 
 	return (
@@ -39,42 +40,44 @@ const LoginForm = () => {
 				onSubmit={method.handleSubmit(onSubmit)}
 				className="space-y-8"
 			>
-				<FormField
-					control={method.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>이메일</FormLabel>
-							<div className="flex gap-2">
+				<div className="space-y-4">
+					<FormField
+						control={method.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>이메일</FormLabel>
+								<div className="flex gap-2">
+									<FormControl>
+										<Input
+											placeholder="이메일을 입력해주세요."
+											{...field}
+										/>
+									</FormControl>
+								</div>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={method.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>비밀번호</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="이메일을 입력해주세요."
+										type="password"
+										placeholder="비밀번호를 입력해주세요."
 										{...field}
 									/>
 								</FormControl>
-							</div>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={method.control}
-					name="password"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>비밀번호</FormLabel>
-							<FormControl>
-								<Input
-									type="password"
-									placeholder="비밀번호를 입력해주세요."
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
 
 				<div className="flex items-center justify-between">
 					<FormField
