@@ -7,28 +7,45 @@ import React, {
 	useState,
 } from "react";
 
-export type UserEmailInfoType = {
+export type SignUpUserInfo = {
+	termsAgree: boolean;
 	email: string;
+	emailCheck: boolean;
 	emailCode: string;
+	password: string;
+	nickname: string;
+	gender: "male" | "female";
+	birthYear: string;
+	region: string;
+	sport: string;
 };
 
-// useState에서 반환하는 타입과 일치하도록 setUserEmailInfo 타입 조정
 interface SignupContextValue {
-	userEmailInfo: UserEmailInfoType;
-	setUserEmailInfo: React.Dispatch<React.SetStateAction<UserEmailInfoType>>;
+	signUpUserInfo: SignUpUserInfo;
+	setSignUpUserInfo: React.Dispatch<React.SetStateAction<SignUpUserInfo>>;
 }
 
 const SignupContext = createContext<SignupContextValue | null>(null);
 
 const SignupContextProvider = ({ children }: { children: ReactNode }) => {
-	const [userEmailInfo, setUserEmailInfo] = useState<UserEmailInfoType>({
+	const [signUpUserInfo, setSignUpUserInfo] = useState<SignUpUserInfo>({
+		termsAgree: false,
 		email: "",
+		emailCheck: false,
 		emailCode: "",
+		password: "",
+		nickname: "",
+		gender: "male",
+		birthYear: "",
+		region: "",
+		sport: "",
 	});
 
+	console.log(signUpUserInfo);
+
 	const contextValue = useMemo(
-		() => ({ userEmailInfo, setUserEmailInfo }),
-		[userEmailInfo, setUserEmailInfo]
+		() => ({ signUpUserInfo, setSignUpUserInfo }),
+		[signUpUserInfo, setSignUpUserInfo]
 	);
 
 	return (

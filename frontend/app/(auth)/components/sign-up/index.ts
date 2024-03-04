@@ -1,5 +1,11 @@
+export { default as BasicUserInfoStep } from "./BasicUserInfoStep/BasicUserInfoStep";
+export { default as EmailPasswordStep } from "./EmailPasswordStep/EmailPasswordStep";
 export { default as EmailCheckField } from "./EmailCheckField/EmailCheckField";
 export { default as EmailCodeField } from "./EmailCodeField/EmailCodeField";
 export { default as FormFieldWrapper } from "./FormFieldWrapper/FormFieldWrapper";
-export { default as BasicUserInfoField } from "./BasicUserInfoField/BasicUserInfoField";
+export { default as PasswordField } from "./PasswordField/PasswordField";
+export { default as RegionStep } from "./RegionStep/RegionStep";
 export { default as SignUpWrapper } from "./SignUpWrapper/SignUpWrapper";
+export { default as SportExperienceStep } from "./SportExperienceStep/SportExperienceStep";
+export { default as TermsAgreeItem } from "./TermsAgreeItem/TermsAgreeItem";
+export { default as TermsAgreeStep } from "./TermsAgreeStep/TermsAgreeStep";

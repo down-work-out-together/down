@@ -1,153 +1,98 @@
 "use client";
-import { useState, useEffect } from "react";
-import clsx from "clsx";
+import { useEffect, useState } from "react";
 
 import { useSignupContext } from "@/app/(auth)/contexts/sign-up/SignUpContext";
+
 import { FormFieldWrapper } from "@/app/(auth)/components/sign-up";
-
-import { emailCheckFieldSchema } from "@/app/(auth)/constants/sign-up/schema";
 import { useCommonForm } from "@/app/(auth)/hooks/sign-up/useCommonForm";
+import { emailCheckFieldSchema } from "@/app/(auth)/constants/sign-up/schema";
 
-import { postEmailCheck, postSendEmailCode } from "@/api/signup";
+import { EmailCheckResponse } from "@/app/(auth)/types/signup";
 
-import { ToastSuccess } from "@/lib/toastifyAlert";
-import { TOAST_MESSAGE } from "@/constants/toastMessage/signup";
+import { postEmailCheck } from "@/api/signup";
 
-import {
-	FieldProps,
-	EmailCheckResponse,
-	EmailCodeSendingStatus,
-} from "@/app/(auth)/types/signup";
+import { cn } from "@/lib/cn";
 
 import {
-	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
+	FormControl,
+	Input,
 } from "@/components/ui";
-import { Input, Button } from "@/components/ui";
 
-const EmailCheckField = ({ onNext }: FieldProps) => {
-	const { userEmailInfo, setUserEmailInfo } = useSignupContext();
+const EmailCheckField = () => {
+	const { signUpUserInfo, setSignUpUserInfo } = useSignupContext();
 
 	const { method } = useCommonForm({
 		schema: emailCheckFieldSchema,
-		checkMode: "onSubmit",
+		checkMode: "onChange",
 		defaultValues: { email: "" },
 	});
-	const { email: formErrors } = method.formState.errors;
+	const { errors } = method.formState;
 
 	const [emailCheckResponse, setEmailCheckResponse] =
 		useState<EmailCheckResponse | null>(null);
-	const [emailCheckErrorMessage, setEmailCheckErrorMessage] = useState<
-		string | null
-	>(null);
-	const [emailCodeSendingStatus, setEmailCodeSendingStatus] =
-		useState<EmailCodeSendingStatus>(null);
 
-	const emailValue = method.watch("email");
-
-	useEffect(() => {
-		setEmailCheckResponse(null);
-		setEmailCheckErrorMessage(null);
-	}, [emailValue]);
-
-	const onSubmit = async () => {
-		const hasEmailInput = await method.trigger("email");
-		if (!hasEmailInput) return;
-
-		const result = await postEmailCheck(emailValue);
-
-		setEmailCheckResponse(result);
-
-		if (result.success) {
-			setEmailCheckErrorMessage(null);
-			setUserEmailInfo({ ...userEmailInfo, email: emailValue });
-		}
-	};
-
-	const onSendEmailVerificationCode = async () => {
-		const hasEmailInput = await method.trigger("email");
-		if (!hasEmailInput) return;
-		if (!emailCheckResponse || !emailCheckResponse.success) {
-			setEmailCheckErrorMessage("먼저 이메일 중복확인을 해주세요.");
-			return;
-		}
+	const handleEmailCheck = async (email: string) => {
+		const isInputValid = await method.trigger("email");
+		if (!isInputValid) return;
 
 		try {
-			setEmailCodeSendingStatus("sending");
-			const result = await postSendEmailCode(userEmailInfo.email);
-
-			if (result.success) {
-				setEmailCodeSendingStatus("success");
-				ToastSuccess(TOAST_MESSAGE.SUCCESS_SEND_CODE);
-				onNext();
-			} else {
-				setEmailCodeSendingStatus("error");
-			}
+			const response = await postEmailCheck(email);
+			setSignUpUserInfo({ ...signUpUserInfo, emailCheck: true, email });
+			setEmailCheckResponse(response.data);
 		} catch (error) {
-			setEmailCodeSendingStatus("error");
+			if (error instanceof Error) {
+				console.log(error);
+				setSignUpUserInfo({ ...signUpUserInfo, emailCheck: false, email: "" });
+				setEmailCheckResponse({ success: false, message: error.message });
+			} else {
+				console.log(error);
+			}
 		}
 	};
+
+	const emailValue = method.watch("email");
+	useEffect(() => {
+		setEmailCheckResponse(null);
+		setSignUpUserInfo({ ...signUpUserInfo, emailCheck: false, email: "" });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [emailValue]);
 
 	return (
 		<FormFieldWrapper
 			method={method}
-			onSubmit={onSubmit}
+			onSubmit={handleEmailCheck}
 		>
 			<FormField
 				control={method.control}
 				name="email"
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel>이메일 입력</FormLabel>
-						<div className="flex gap-2">
+						<div className="flex space-x-2">
 							<FormControl>
 								<Input
-									placeholder="email@example.com"
 									{...field}
+									onBlur={() => handleEmailCheck(field.value)}
+									placeholder="email@example.com"
+									className={cn(errors.email ? "border-destructive" : "")}
 								/>
 							</FormControl>
-							<Button type="submit">중복확인</Button>
 						</div>
-						<FormMessage />
-						{!formErrors && !emailCheckResponse && emailCheckErrorMessage && (
-							<p className="text-sm font-medium text-destructive">
-								{emailCheckErrorMessage}
-							</p>
-						)}
-						{!formErrors && emailCheckResponse && (
-							<p
-								className={clsx(
-									"text-sm font-medium",
-									emailCheckResponse.success
-										? "text-stone-500"
-										: "text-destructive"
-								)}
-							>
-								{emailCheckResponse.message}
-							</p>
-						)}
-						{!formErrors && emailCodeSendingStatus === "error" && (
-							<p className="text-sm font-medium text-destructive">
-								인증코드 전송 중 오류가 발생했습니다. 다시 시도해주세요.
-							</p>
-						)}
+						<FormMessage
+							className={cn(
+								emailCheckResponse?.success
+									? "text-stone-500"
+									: "text-destructive",
+								"text-sm"
+							)}
+						>
+							{emailCheckResponse?.message}
+						</FormMessage>
 					</FormItem>
 				)}
 			/>
-			<Button
-				onClick={onSendEmailVerificationCode}
-				disabled={emailCodeSendingStatus === "sending"}
-				variant="outline"
-				className="w-full"
-				type="button"
-			>
-				{emailCodeSendingStatus === "sending"
-					? "인증코드 전송중"
-					: "인증코드 전송하기"}
-			</Button>
 		</FormFieldWrapper>
 	);
 };

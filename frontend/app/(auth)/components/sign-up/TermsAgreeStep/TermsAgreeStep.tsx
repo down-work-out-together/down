@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useSignupContext } from "@/app/(auth)/contexts/sign-up/SignUpContext";
 
-import { FieldProps } from "@/app/(auth)/types/signup";
+import { StepProps } from "@/app/(auth)/types/signup";
 
 import { TermsAgreeItem } from "@/app/(auth)/components/sign-up";
 import { Button } from "@/components/ui";
@@ -38,7 +38,7 @@ const agreementItems: AgreementItem[] = [
 	},
 ];
 
-const TermsAgreeStep = ({ onNext }: FieldProps) => {
+const TermsAgreeStep = ({ onNext }: StepProps) => {
 	const { signUpUserInfo, setSignUpUserInfo } = useSignupContext();
 	const [submitBtnActive, setSubmitBtnActive] = useState(false);
 

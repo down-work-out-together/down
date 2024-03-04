@@ -1,22 +1,28 @@
 "use client";
-import { FieldValues, SubmitHandler, UseFormReturn } from "react-hook-form";
-import { HTMLAttributes } from "react";
-
+import { UseFormReturn } from "react-hook-form";
 import { Form } from "@/components/ui";
 
 type FormFieldWrapperProps = {
-  method: UseFormReturn<FieldValues>;
-  onSubmit: SubmitHandler<FieldValues>;
-} & HTMLAttributes<HTMLDivElement>;
+	children: React.ReactNode;
+	method: UseFormReturn;
+	onSubmit: (values: any) => Promise<void>;
+};
 
-const FormFieldWrapper = ({ children, method, onSubmit }: FormFieldWrapperProps) => {
-  return (
-    <Form {...method}>
-      <form className="space-y-8" onSubmit={method.handleSubmit(onSubmit)}>
-        {children}
-      </form>
-    </Form>
-  );
+const FormFieldWrapper = ({
+	children,
+	method,
+	onSubmit,
+}: FormFieldWrapperProps) => {
+	return (
+		<Form {...method}>
+			<form
+				className="space-y-8"
+				onSubmit={method.handleSubmit(onSubmit)}
+			>
+				{children}
+			</form>
+		</Form>
+	);
 };
 
 export default FormFieldWrapper;
