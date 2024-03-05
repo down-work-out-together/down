@@ -79,7 +79,7 @@ const BasicUserInfoStep = ({ onNext }: StepProps) => {
 			password: signUpUserInfo.password,
 			nickName: signUpUserInfo.nickname,
 			gender: signUpUserInfo.gender,
-			birth: signUpUserInfo.birthYear,
+			birth: `${signUpUserInfo.birthYear}-01-01`,
 			userName: signUpUserInfo.nickname,
 			code: signUpUserInfo.emailCode,
 			termsAgree: signUpUserInfo.termsAgree,
