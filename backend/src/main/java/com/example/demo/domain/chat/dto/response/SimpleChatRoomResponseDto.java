@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "간단한 채팅방 정보")
+@Schema(description = "간단한 채팅방 정보 응답")
 public class SimpleChatRoomResponseDto {
 
     @Schema(description = "마지막 메시지", example = "안녕하세요.")
@@ -23,4 +23,7 @@ public class SimpleChatRoomResponseDto {
 
     @Schema(description = "채팅방 이름", example = "채팅방1")
     private String chatRoomName;
+
+    @Schema(description = "채팅방 id", example = "1")
+    private Long chatRoomId;
 }

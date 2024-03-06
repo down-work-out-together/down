@@ -1,5 +1,6 @@
 package com.example.demo.domain.chat.dto.response;
 
+import com.example.demo.domain.user.dto.response.UserInfoResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "채팅방 정보")
+@Schema(description = "채팅방 정보 응답")
 public class ChatRoomDto {
 
     @Schema(description = "채팅방 ID", example = "1")
@@ -21,6 +22,6 @@ public class ChatRoomDto {
     @Schema(description = "채팅방 이름", example = "채팅방1")
     private String chatRoomName;
 
-    @Schema(description = "회원 ID 목록", example = "[1, 2, 3]")
-    private List<Long> userIdList;
+    @Schema(description = "회원 정보 목록")
+    private List<UserInfoResponseDTO> userInfoResponseDTOList;
 }

@@ -19,8 +19,12 @@ import java.util.List;
 @Schema(description = "채팅방 생성 요청")
 public class ChatRoomCreateRequest {
 
+    @NotNull(message = "회원 id는 필수 입력 값입니다.")
+    @Positive(message = "올바른 회원 id를 입력해주세요.")
+    @Schema(description = "회원 id", example = "1")
+    private Long userId;
+
     @NotNull(message = "초대할 회원 id는 필수 입력 값입니다.")
-    @Positive(message = "올바른 초대할 회원 id를 입력해주세요.")
     @Schema(description = "초대할 회원 id", example = "[1, 2, 3]")
     private List<Long> userIdList = new ArrayList<>();
 

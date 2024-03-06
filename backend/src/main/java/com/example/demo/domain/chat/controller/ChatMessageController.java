@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -77,12 +78,12 @@ public class ChatMessageController {
             )
     })
     @GetMapping("/api/v1/chat/message")
-    public ResponseEntity<BaseResponse<ChatMessageReadResponseDto>> messageList(@Valid ChatMessageReadCondition cond){
+    public ResponseEntity<BaseResponse<ChatMessageReadResponseDto>> messageList(@Valid @ModelAttribute ChatMessageReadCondition cond){
         ChatMessageReadResponseDto result = chatMessageService.findLatestMessage(cond);
 
         SuccessResponse<ChatMessageReadResponseDto> response = SuccessResponse.<ChatMessageReadResponseDto>builder()
                 .data(result)
-                .message("로그인 성공")
+                .message("채팅 메시지 목록 조회 성공")
                 .build();
 
         return ResponseEntity.ok(response);

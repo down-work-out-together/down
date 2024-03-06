@@ -23,7 +23,7 @@ public class RedisSubscriber {
             // ChatMessageDto 객채로 맵핑
             ChatMessageDto chatMessageDto = objectMapper.readValue(publishMessage, ChatMessageDto.class);
             // Websocket 구독자에게 채팅 메시지 Send
-            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDto.getChatRoomId(), chatMessageDto);
+            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDto.getChatRoomId(), objectMapper.writeValueAsString(chatMessageDto));
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -21,7 +21,7 @@ public class ChatRoom {
     private String chatRoomName;
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<ChatMessage> messageList;
+    private List<ChatMessage> messageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();

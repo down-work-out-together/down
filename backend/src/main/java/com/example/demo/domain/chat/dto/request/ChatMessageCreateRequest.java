@@ -1,6 +1,5 @@
 package com.example.demo.domain.chat.dto.request;
 
-import com.example.demo.domain.chat.entity.ChatMessage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +32,6 @@ public class ChatMessageCreateRequest {
 
     @NotNull(message = "메시지 타입은 필수 입력 값입니다.")
     @Schema(description = "메시지 타입", example = "ENTER")
-    private ChatMessage.MessageType type;    //ENTER, QUIT, TALK
+    private String type;    //ENTER, QUIT, TALK
 
 }

@@ -19,9 +19,4 @@ public class ChatRoomDeleteRequest {
     @Positive(message = "올바른 회원 id를 입력해주세요.")
     @Schema(description = "회원 id", example = "1")
     private Long userId;
-
-    @NotNull(message = "채팅방 id는 필수 입력 값입니다.")
-    @Positive(message = "올바른 채팅방 id를 입력해주세요.")
-    @Schema(description = "채팅방 id", example = "1")
-    private Long chatRoomId;
 }

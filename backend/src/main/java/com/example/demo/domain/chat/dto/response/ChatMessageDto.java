@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @Schema(description = "채팅 메시지 응답")
 public class ChatMessageDto {
@@ -30,7 +29,7 @@ public class ChatMessageDto {
     private String content;
 
     @Schema(description = "메시지 타입 (ENTER, QUIT, TALK)", example = "ENTER")
-    private ChatMessage.MessageType type;
+    private String type;
 
     @Schema(description = "메시지 작성 시간")
     private LocalDateTime createdAt;
@@ -40,16 +39,17 @@ public class ChatMessageDto {
                 this.userId,
                 this.userName,
                 this.content,
-                this.getType(),
+                ChatMessage.MessageType.valueOf(this.type),
                 chatRoom);
     }
 
+    @Builder
     public ChatMessageDto(Long chatRoomId, Long userId, String userName, String content, ChatMessage.MessageType type, LocalDateTime createdAt) {
         this.chatRoomId = chatRoomId;
         this.userId = userId;
         this.userName = userName;
         this.content = content;
-        this.type = type;
+        this.type = String.valueOf(type);
         this.createdAt = createdAt;
     }
 }

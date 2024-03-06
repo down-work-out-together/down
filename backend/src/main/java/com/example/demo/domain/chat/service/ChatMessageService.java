@@ -13,6 +13,8 @@ import com.example.demo.domain.user.entity.User;
 import com.example.demo.domain.user.repository.UserRepository;
 import com.example.demo.global.exception.CustomException;
 import com.example.demo.global.exception.ExceptionCode;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,7 +33,8 @@ public class ChatMessageService {
     private final ChatRoomJpaRepository chatRoomJpaRepository;
     private final ChatRoomUserJpaRepository chatRoomUserJpaRepository;
     private final UserRepository userRepository;
-    private final RedisTemplate redisTemplate;
+    private final ObjectMapper objectMapper;
+    private final RedisTemplate<String,Object> chatRedisTemplate;
     private final ChannelTopic channelTopic;
 
     public void saveChatMessage(ChatMessageCreateRequest req) {
@@ -51,13 +54,17 @@ public class ChatMessageService {
                 .userName(user.getUserName())
                 .userId(req.getUserId())
                 .content(req.getContent())
-                .type(req.getType())
+                .type(ChatMessage.MessageType.valueOf(req.getType()))
                 .createdAt(LocalDateTime.now())
                 .build();
 
         ChatMessage chatMessage = chatMessageDto.toEntity(chatRoom);
         chatMessageJpaRepository.save(chatMessage); //  MySQL에 저장
-        redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessageDto);
+        try {
+            chatRedisTemplate.convertAndSend(channelTopic.getTopic(), objectMapper.writeValueAsString(chatMessageDto));
+        } catch (JsonProcessingException e) {
+            throw new CustomException(ExceptionCode.JSON_PARSING_ERROR);
+        }
     }
 
     /**
