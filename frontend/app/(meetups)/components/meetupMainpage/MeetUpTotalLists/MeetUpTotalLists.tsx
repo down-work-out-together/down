@@ -1,4 +1,7 @@
-import { MeetUpPageSection, PostItem } from "@/app/(meetups)/components";
+import {
+	MeetUpPageSection,
+	PostItem,
+} from "@/app/(meetups)/components/meetupMainpage";
 import { Command, CommandInput } from "@/components/ui";
 
 import { dummyPosts } from "../dummyPosts";
@@ -17,6 +20,7 @@ const MeetUpTotalLists = () => {
 					>
 						<PostItem
 							key={index}
+							postId={index + 1}
 							post={post}
 						/>
 					</div>

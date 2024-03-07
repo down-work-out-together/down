@@ -1,4 +1,7 @@
-import { MeetUpPageSection, TagItem } from "@/app/(meetups)/components";
+import {
+	MeetUpPageSection,
+	TagItem,
+} from "@/app/(meetups)/components/meetupMainpage";
 import { dummyTags } from "../dummyTags";
 
 const PopularTags = () => {

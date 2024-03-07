@@ -3,7 +3,7 @@ import {
 	MeetUpTotalLists,
 	PopularPosts,
 	PopularTags,
-} from "@/app/(meetups)/components";
+} from "@/app/(meetups)/components/meetupMainpage";
 
 const MeetupsPage = () => {
 	return (

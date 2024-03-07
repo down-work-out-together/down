@@ -1,6 +1,9 @@
 import React from "react";
 import { dummyPosts } from "../dummyPosts";
-import { MeetUpPageSection, PostItem } from "@/app/(meetups)/components";
+import {
+	MeetUpPageSection,
+	PostItem,
+} from "@/app/(meetups)/components/meetupMainpage";
 
 const PopularPosts = () => {
 	const popularPosts = dummyPosts.slice(0, 4);
@@ -14,6 +17,7 @@ const PopularPosts = () => {
 					>
 						<PostItem
 							key={index}
+							postId={index + 1}
 							post={post}
 						/>
 					</div>
