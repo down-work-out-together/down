@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { PopularPosts } from "@/app/(meetups)/components";
 
-const GatheringPage = () => {
-  return (
-    <div>모임 메인 페이지</div>
-  )
-}
+const MeetupsPage = () => {
+	return (
+		<div className="container flex flex-col min-h-screen">
+			<PopularPosts />
+		</div>
+	);
+};
 
-export default GatheringPage
+export default MeetupsPage;

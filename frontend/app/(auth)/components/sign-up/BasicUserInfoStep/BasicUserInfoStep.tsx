@@ -36,7 +36,7 @@ const BasicUserInfoStep = ({ onNext }: StepProps) => {
 		checkMode: "onBlur",
 		defaultValues: {
 			nickname: "",
-			gender: "male",
+			gender: "",
 			birthYear: "",
 		},
 	});

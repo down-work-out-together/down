@@ -57,6 +57,8 @@ const EmailCodeField = () => {
 	const [emailCodeCheckResponse, setEmailCodeCheckResponse] =
 		useState<EmailCodeResponse | null>(null);
 	const handleCheckCode = async (value: FieldValues) => {
+		if (!value.emailCode) return;
+
 		try {
 			const emailCode = value.emailCode;
 			const response = await postCheckEmailCode(email, emailCode);
