@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @Tag(
-        name = "채팅 메시지",
-        description = "채팅 메시지를 위한 API"
+        name = "그룹 채팅 메시지",
+        description = "그룹 채팅 메시지를 위한 API"
 )
 public class ChatMessageController {
 
@@ -36,9 +36,9 @@ public class ChatMessageController {
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
-     * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
+     * websocket "/pub/group/chat/message"로 들어오는 메시징을 처리한다.
      */
-    @MessageMapping("/chat/message")
+    @MessageMapping("/group/chat/message")
     public void message(ChatMessageCreateRequest req, @RequestHeader("Authorization") String authorizationHeader) {
         jwtTokenProvider.validateToken(jwtTokenProvider.authorizationToJwt(authorizationHeader));
         chatMessageService.saveChatMessage(req);
@@ -50,13 +50,6 @@ public class ChatMessageController {
     @Operation(
             summary = "채팅방 메시지 조회",
             description = "채팅방의 최근 메시지를 조회합니다."
-    )
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "채팅방 메시지 조회 요청",
-            required = true,
-            content = @Content(
-                    schema = @Schema(implementation = ChatMessageReadCondition.class)
-            )
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -77,7 +70,7 @@ public class ChatMessageController {
                     )
             )
     })
-    @GetMapping("/api/v1/chat/message")
+    @GetMapping("/api/v1/group/chat/message")
     public ResponseEntity<BaseResponse<ChatMessageReadResponseDto>> messageList(@Valid @ModelAttribute ChatMessageReadCondition cond){
         ChatMessageReadResponseDto result = chatMessageService.findLatestMessage(cond);
 

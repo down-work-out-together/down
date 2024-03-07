@@ -144,10 +144,11 @@ public class ChatRoomService {
             throw new CustomException(ExceptionCode.JSON_PARSING_ERROR);
         }
 
-        return new ChatRoomDeleteResponseDto(chatRoomUser.getId());
+        return new ChatRoomDeleteResponseDto(chatRoom.getId());
     }
 
     public ChatRoomInviteResponseDto inviteChatRoom(ChatRoomInviteRequest req) {
+
         User inviter = userRepository.findById(req.getInviterId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_USER));
 
@@ -156,6 +157,10 @@ public class ChatRoomService {
 
         ChatRoom chatRoom = chatRoomJpaRepository.findById(req.getChatRoomId())
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_EXIST_CHAT_ROOM));
+
+        if(chatRoomUserJpaRepository.existsByUserAndChatRoom(inviter, chatRoom)) {
+            throw new CustomException(ExceptionCode.NOT_EXIST_CHAT_ROOM_USER);
+        }
 
         if(chatRoomUserJpaRepository.existsByUserAndChatRoom(target, chatRoom)) {
             throw new CustomException(ExceptionCode.ALREADY_EXIST_CHAT_ROOM_USER);

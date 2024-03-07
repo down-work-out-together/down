@@ -55,7 +55,7 @@ class ChatMessageControllerTest {
         given(chatMessageService.findLatestMessage(cond)).willReturn(result);
 
         // When
-        mockMvc.perform(get("/api/v1/chat/message")
+        mockMvc.perform(get("/api/v1/group/chat/message")
                         .param("size", String.valueOf(cond.getSize()))
                         .param("chatRoomId", String.valueOf(cond.getChatRoomId()))
                         .param("lastMessageId", String.valueOf(cond.getLastChatMessageId()))

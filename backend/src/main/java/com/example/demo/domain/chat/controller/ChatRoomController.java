@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @Tag(
-        name = "채팅방",
-        description = "채팅방을 위한 API"
+        name = "그룹 채팅방",
+        description = "그룹 채팅방을 위한 API"
 )
 public class ChatRoomController {
 
@@ -40,7 +40,7 @@ public class ChatRoomController {
                     description = "채팅방 목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = SimpleChatRoomResponseDto.class)
+                            schema = @Schema(implementation = ChatRoomListResponseDto.class)
                     )
             ),
             @ApiResponse(
@@ -55,7 +55,7 @@ public class ChatRoomController {
                     )
             )
     })
-    @GetMapping("/api/v1/chatRoom/list/{userId}")
+    @GetMapping("/api/v1/group/chatRoom/list/{userId}")
     public ResponseEntity<BaseResponse<ChatRoomListResponseDto>> getAllChatRoomByUserId(@Parameter(description = "사용자 ID", example = "1")
                                                                              @PathVariable long userId) {
 
@@ -94,7 +94,7 @@ public class ChatRoomController {
                     )
             )
     })
-    @GetMapping("/api/v1/chatRoom/{chatRoomId}")
+    @GetMapping("/api/v1/group/chatRoom/{chatRoomId}")
     public ResponseEntity<BaseResponse<ChatRoomDto>> getChatRoom(@Parameter(description = "채팅방 ID", example = "1")
                                                                      @PathVariable long chatRoomId) {
         ChatRoomDto result = chatRoomService.getChatRoomWithUserListByChatRoomId(chatRoomId);
@@ -135,7 +135,7 @@ public class ChatRoomController {
                     )
             )
     })
-    @PostMapping("/api/v1/chatRoom")
+    @PostMapping("/api/v1/group/chatRoom")
     public ResponseEntity<BaseResponse<ChatRoomCreateResponseDto>> createChatRoom(@Valid @RequestBody ChatRoomCreateRequest req) {
 
         ChatRoomCreateResponseDto result = chatRoomService.createChatRoom(req);
@@ -178,10 +178,10 @@ public class ChatRoomController {
                     )
             )
     })
-    @PatchMapping("/api/v1/chatRoom/{chatRoomId}/exit")
+    @PatchMapping("/api/v1/group/chatRoom/{chatRoomId}/exit")
     public ResponseEntity<BaseResponse<ChatRoomDeleteResponseDto>> exitChatRoom(@Parameter(description = "채팅방 ID", example = "1")
                                                                                     @PathVariable long chatRoomId,
-                                                                                    @Valid @ModelAttribute ChatRoomDeleteRequest req) {
+                                                                                    @Valid @RequestBody ChatRoomDeleteRequest req) {
 
         ChatRoomDeleteResponseDto result = chatRoomService.exitChatroom(chatRoomId, req);
 
@@ -202,7 +202,7 @@ public class ChatRoomController {
             description = "채팅방 초대 요청",
             required = true,
             content = @Content(
-                    schema = @Schema(implementation = ChatRoomCreateRequest.class)
+                    schema = @Schema(implementation = ChatRoomInviteRequest.class)
             )
     )
     @ApiResponses(value = {
@@ -225,7 +225,7 @@ public class ChatRoomController {
                     )
             )
     })
-    @PostMapping("/api/v1/chatRoom/invite")
+    @PostMapping("/api/v1/group/chatRoom/invite")
     public ResponseEntity<BaseResponse<ChatRoomInviteResponseDto>> inviteChatRoom(@Valid @RequestBody ChatRoomInviteRequest req) {
 
         ChatRoomInviteResponseDto result = chatRoomService.inviteChatRoom(req);

@@ -51,7 +51,7 @@ class ChatRoomControllerTest {
         given(chatRoomService.getAllChatRoomByUserId(1L)).willReturn(result);
 
         // When
-        mockMvc.perform(get("/api/v1/chatRoom/list/{userId}", 1L)
+        mockMvc.perform(get("/api/v1/group/chatRoom/list/{userId}", 1L)
                         .with(csrf()))
                 .andExpect(status().isOk());
     }
@@ -66,7 +66,7 @@ class ChatRoomControllerTest {
         given(chatRoomService.getChatRoomWithUserListByChatRoomId(1L)).willReturn(dto);
 
         // When
-        mockMvc.perform(get("/api/v1/chatRoom/{chatRoomId}", 1L)
+        mockMvc.perform(get("/api/v1/group/chatRoom/{chatRoomId}", 1L)
                         .with(csrf()))
                 .andExpect(status().isOk());
     }
@@ -82,7 +82,7 @@ class ChatRoomControllerTest {
         given(chatRoomService.createChatRoom(req)).willReturn(result);
 
         // When
-        mockMvc.perform(post("/api/v1/chatRoom")
+        mockMvc.perform(post("/api/v1/group/chatRoom")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
@@ -101,9 +101,10 @@ class ChatRoomControllerTest {
         given(chatRoomService.exitChatroom(chatRoomId, req)).willReturn(result);
 
         // When
-        mockMvc.perform(patch("/api/v1/chatRoom/{chatRoomId}/exit", chatRoomId)
-                        .param("userId", String.valueOf(req.getUserId()))
-                        .with(csrf()))
+        mockMvc.perform(patch("/api/v1/group/chatRoom/{chatRoomId}/exit", chatRoomId)
+                        .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk());
     }
 
@@ -118,7 +119,7 @@ class ChatRoomControllerTest {
         given(chatRoomService.inviteChatRoom(req)).willReturn(result);
 
         // When
-        mockMvc.perform(post("/api/v1/chatRoom/invite")
+        mockMvc.perform(post("/api/v1/group/chatRoom/invite")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
